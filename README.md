@@ -24,7 +24,7 @@ It returns a **professional due-diligence report** containing:
 
 DD-Agent is built on **LangGraph** and orchestrates 5 specialist analyst agents in parallel, then loops them through a critic-driven debate until every finding is backed by hard evidence.
 
-architecture.mmd
+![Report cover with score and risk breakdown chart](architecture.mmd)
 
 ### The 5 Specialist Agents
 
