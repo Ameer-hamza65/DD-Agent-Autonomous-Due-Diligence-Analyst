@@ -1,0 +1,34 @@
+graph TD
+    START([User Input: Company + Ticker]) --> ORCH[Orchestrator Agent<br/>Validates input, sets up state]
+    
+    ORCH -->|Parallel Fan-Out| FIN[Financial Analyst<br/>yfinance + 10-K financials]
+    ORCH -->|Parallel Fan-Out| NEWS[News Analyst<br/>GDELT + Web Search]
+    ORCH -->|Parallel Fan-Out| TECH[Tech Analyst<br/>GitHub API]
+    ORCH -->|Parallel Fan-Out| MKT[Market Analyst<br/>Competitor + TAM data]
+    ORCH -->|Parallel Fan-Out| RISK[Risk Analyst<br/>10-K Risk Factors]
+    
+    FIN -->|Findings| CRITIC{Critic Agent<br/>Reviews all findings<br/>Demands evidence}
+    NEWS -->|Findings| CRITIC
+    TECH -->|Findings| CRITIC
+    MKT -->|Findings| CRITIC
+    RISK -->|Findings| CRITIC
+    
+    CRITIC -->|Weak findings detected<br/>iteration less than max| REVISE[Revision Router<br/>Routes critique to original agent]
+    CRITIC -->|All findings pass<br/>OR max iterations hit| SCORE[Red-Flag Scorer<br/>Weighted category scoring<br/>Explainability breakdown]
+    
+    REVISE -->|Re-run with critique context| FIN
+    REVISE -->|Re-run with critique context| NEWS
+    REVISE -->|Re-run with critique context| TECH
+    REVISE -->|Re-run with critique context| MKT
+    REVISE -->|Re-run with critique context| RISK
+    
+    SCORE --> REPORT[Report Writer<br/>ReportLab PDF generation<br/>Charts + Citations]
+    REPORT --> END([Final PDF + Score JSON])
+    
+    classDef analyst fill:#3b82f6,stroke:#1e40af,color:#fff
+    classDef control fill:#f59e0b,stroke:#b45309,color:#fff
+    classDef output fill:#10b981,stroke:#047857,color:#fff
+    
+    class FIN,NEWS,TECH,MKT,RISK analyst
+    class ORCH,CRITIC,REVISE,SCORE control
+    class REPORT,END output
